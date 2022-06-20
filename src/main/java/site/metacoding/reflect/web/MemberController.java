@@ -43,4 +43,6 @@ public class MemberController {
 		Member memberEntity = new Member(1, "ssar", "1234");
 		MessageConverter.resolve(memberEntity, response);
 	}
+	
+	
 }

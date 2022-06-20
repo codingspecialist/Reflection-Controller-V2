@@ -2,8 +2,11 @@ package site.metacoding.reflect.config;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import site.metacoding.reflect.config.web.RequestMapping;
-import site.metacoding.reflect.domain.Member;
 import site.metacoding.reflect.util.UtilsLog;
 import site.metacoding.reflect.web.MemberController;
 
@@ -44,16 +46,27 @@ public class DispatcherServlet extends HttpServlet {
 			RequestMapping requestMapping = (RequestMapping) annotation;
 			
 			if(identifier.equals(requestMapping.value())) {
+				
 				try {
 					Parameter[] params = method.getParameters();
-					for(Parameter param : params) {
-						// 1. HttpServletRequest를 찾았다. req를 넣어주고!!
+					Object[] queue = new Object[params.length];
+					for(int i=0; i< params.length; i++) {
+						Class<?> cls = params[i].getType();
+						System.out.println("cls : "+cls);
+						if(cls == HttpServletRequest.class) {
+							System.out.println("Request 찾음");
+							queue[i] = req;
+						}else if(cls == HttpServletResponse.class) {
+							System.out.println("Response 찾음");
+							queue[i] = resp;
+						}else {
+							Constructor<?> constructor = cls.getConstructor();
+							queue[i] = constructor.newInstance();
+						}
 						
-						// 2. HttpServletResponse를 찾았다. resp를 넣어주고!!
-						
-						// Member를 찾았다. 없자나!! -> new해서 넣어주고
-						
+						System.out.println("size : "+queue.length);
 					}	
+					method.invoke(memberController, queue);
 					
 					
 				} catch (Exception e) {

@@ -65,9 +65,14 @@ public class DispatcherServlet extends HttpServlet {
 							queue[i] = constructor.newInstance();
 							
 							for (Method m : queue[i].getClass().getDeclaredMethods()) {
-								System.out.println(req.getParameter("username"));
-								System.out.println(req.getParameter("password"));
-								System.out.println(m.getName());
+								if(m.getName().startsWith("set")) {
+									String key = m.getName().replace("set", "").toLowerCase();
+									
+									String param = req.getParameter(key);
+									if(param != null) {
+										m.invoke(queue[i], param);
+									}	
+								}
 							}
 						}
 						

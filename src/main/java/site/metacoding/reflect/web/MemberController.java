@@ -25,6 +25,7 @@ public class MemberController {
 	public void join(Member member, HttpServletRequest request, HttpServletResponse response) {
 		UtilsLog.getInstance().info(TAG, "join()");
 		UtilsLog.getInstance().info(TAG, "Service가 호출되어 회원가입 완료되었습니다.");
+		UtilsLog.getInstance().info(TAG, member.getUsername() +", "+member.getPassword());
 		request.setAttribute("username", "ssar");
 		ViewResolver.resolve("main.jsp", request, response);
 	}

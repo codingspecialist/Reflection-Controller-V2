@@ -1,7 +1,7 @@
 package site.metacoding.reflect.domain;
 
 public class Member {
-	private int id;
+	private Integer id;
 	private String username;
 	private String password;
 	
@@ -9,7 +9,7 @@ public class Member {
 		
 	}
 	
-	public Member(int id, String username, String password) {
+	public Member(Integer id, String username, String password) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
@@ -18,7 +18,7 @@ public class Member {
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getUsername() {

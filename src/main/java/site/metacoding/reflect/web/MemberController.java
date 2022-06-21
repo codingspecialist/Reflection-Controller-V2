@@ -22,7 +22,7 @@ public class MemberController {
 	
 	/*   GET     /join         */
 	@RequestMapping("/join")
-	public void join(HttpServletRequest request, HttpServletResponse response) {
+	public void join(Member member, HttpServletRequest request, HttpServletResponse response) {
 		UtilsLog.getInstance().info(TAG, "join()");
 		UtilsLog.getInstance().info(TAG, "Service가 호출되어 회원가입 완료되었습니다.");
 		request.setAttribute("username", "ssar");

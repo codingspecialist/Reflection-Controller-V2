@@ -3,6 +3,7 @@ package site.metacoding.reflect.config;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import site.metacoding.reflect.config.web.RequestMapping;
-import site.metacoding.reflect.domain.Member;
 import site.metacoding.reflect.util.UtilsLog;
 import site.metacoding.reflect.web.MemberController;
 
@@ -64,6 +64,10 @@ public class DispatcherServlet extends HttpServlet {
 							Constructor<?> constructor = cls.getConstructor();
 							queue[i] = constructor.newInstance();
 							
+//							Field f = queue[i].getClass().getField("username");
+//							f.setAccessible(true);
+//							f.set(queue[i], "안녕");
+							
 							for (Method m : queue[i].getClass().getDeclaredMethods()) {
 								if(m.getName().startsWith("set")) {
 									String key = m.getName().replace("set", "").toLowerCase();
@@ -78,9 +82,9 @@ public class DispatcherServlet extends HttpServlet {
 						
 						System.out.println("size : "+queue.length);
 					}	
-					
+					// 전 (인터셉터)
 					method.invoke(memberController, queue);
-					
+					// 후 (인터셉터)
 					
 				} catch (Exception e) {
 					e.printStackTrace();
